@@ -22,7 +22,7 @@ int		main(int argc, char **argv)
 	t_vars	v;
 	int		i;
 
-	i = -1;
+	i = 0;
 	init(&v);
 	while (++i < argc)
 	{
@@ -66,6 +66,9 @@ void	init(t_vars *v)
 
 /*
 **	Frees all variables inside the 'v' structure.
+**
+**	if (v->ret == -1)
+**		ft_putendl("asm Error: No valid file specified. Exiting.");
 */
 
 void	ft_exit(t_vars *v)
@@ -73,8 +76,6 @@ void	ft_exit(t_vars *v)
 	int i;
 
 	i = -1;
-	if (v->ret == -1)
-		ft_putendl("asm Error: No valid file specified. Exiting.");
 	while (++i < v->num_args)
 		free(v->args[i]);
 	free(v->args);

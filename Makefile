@@ -11,19 +11,19 @@
 # **************************************************************************** #
 
 ASMNAME = asm
-ASMLOC = asm/
+ASMLOC = assembler/
 ASMFILES =	$(ASMLOC)asm.c\
 			$(ASMLOC)process_args.c
 ASMHEADER = $(ASMLOC)asm.h
 ASMHLOC = $(ASMLOC)
-ASMOBJECTS =	./asm.o\
-				./process_args.o
-ASMFLAGS = -Wall -Werror -Wextra -I$(ASMHLOC) -c -g3
+ASMOBJECTS =	asm.o\
+				process_args.o
+ASMFLAGS = -Wall -Werror -Wextra -I$(ASMHLOC) -c -g -g3
 
 LIBFT = libft/libft.a
 
 $(ASMNAME): fclean
-	@gcc $(ASMFLAGS) $(ASMFILES) $(ASMHEADER)
+	@gcc $(ASMFLAGS) $(ASMFILES)
 	@gcc -o $(ASMNAME) $(ASMOBJECTS) $(LIBFT)
 	@echo "asm Compiled"
 
@@ -37,7 +37,7 @@ clean:
 	@rm -f $(ASMOBJECTS)
 	@echo "asm Cleaned"
 
-fclean: 
+fclean: clean
 	@rm -f $(ASMSNAME)
 	@echo "asm Executable Deleted"
 
@@ -48,7 +48,7 @@ mclean:
 re: clean fclean libft all
 
 norm:
-	@make -C libft/ norm
-	@echo "Norme asm"
+	#@make -C libft/ norm
+	#@echo "\nNorme asm"
 	@norminette -R CheckForbiddenSourceHeader $(ASMFILES) $(ASMHEADER)
 	@echo "\nNorme Check Completed"

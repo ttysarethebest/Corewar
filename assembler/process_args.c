@@ -72,7 +72,7 @@ void	add_arg(char *arg, t_vars *v)
 
 /*
 **	Takes in a string argument 'arg' and its len, check's the type of the
-**	argument, if it is ".s", it checks to see if the file exits using 
+**	argument, if it is ".s", it checks to see if the file exits using
 **	'test_file_dir()' and returns an int depending on the result.
 **
 **	Return Values:
@@ -86,7 +86,7 @@ int		test_arg(t_vars *v, char *arg, int arg_len)
 {
 	DIR		*d;
 	char	*temp;
-	int		file_name_len;
+	int		path_len;
 
 	v->test_path = arg;
 	v->test_file = arg;
@@ -94,9 +94,9 @@ int		test_arg(t_vars *v, char *arg, int arg_len)
 		return (-3);
 	else if (((temp = ft_strrchr(arg, '/')) != NULL))
 	{
-		file_name_len = arg_len - ft_strlen(temp + 1);
-		v->test_path = ft_strsub(arg, 0, arg_len - 1);
-		v->test_file = (arg + arg_len);
+		path_len = arg_len - ft_strlen(temp + 1);
+		v->test_path = ft_strsub(arg, 0, path_len - 1);
+		v->test_file = (arg + path_len);
 	}
 	else
 		v->test_path = ".";
@@ -141,7 +141,7 @@ void	print_verbose(t_vars *v, char *path, int test)
 {
 	ft_putstr("\nProcessing Path: ");
 	ft_putendl(path);
-	ft_putstr("Test Path Status: ");
+	ft_putstr("Test Arg Status: ");
 	ft_putnendl(test);
 	ft_putstr("Processed Path: ");
 	ft_putendl(v->test_path);
