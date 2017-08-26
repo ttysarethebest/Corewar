@@ -40,7 +40,7 @@ int		main(int argc, char **argv)
 		v.ret = -1;
 	while (v.ret == 0 && ++v.i < v.num_args)
 		ft_asm(&v);
-	ft_exit(&v);
+	ft_exit(&v, argc);
 	return (v.ret);
 }
 
@@ -59,25 +59,33 @@ void	init(t_vars *v)
 	v->num_args = 0;
 	v->test_path = NULL;
 	v->test_file = NULL;
+	v->paths = NULL;
+	v->files = NULL;
 	v->args = NULL;
 	while (++i < MAX_OPTS + 2)
 		v->options[i] = '\0';
 }
 
 /*
-**	Frees all variables inside the 'v' structure.
-**
-**	if (v->ret == -1)
-**		ft_putendl("asm Error: No valid file specified. Exiting.");
+**	Frees all variables inside the 'v' structure & prints out errors and
+**	warnings if necessary.
 */
 
-void	ft_exit(t_vars *v)
+void	ft_exit(t_vars *v, int argc)
 {
 	int i;
 
 	i = -1;
+	if (v->ret == -1 && argc == 1)
+		ft_putendl("Usage :\n./asm file_name[.s] ...");
 	while (++i < v->num_args)
+	{
+		free(v->paths[i]);
+		free(v->files[i]);
 		free(v->args[i]);
+	}
+	free(v->paths);
+	free(v->files);
 	free(v->args);
 }
 
@@ -92,5 +100,4 @@ void	ft_asm(t_vars *v)
 	ft_putstr(" at index ");
 	ft_putnbr(v->i);
 	ft_putendl(".");
-	v->ret = 1;
 }
