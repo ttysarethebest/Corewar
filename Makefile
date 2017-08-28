@@ -45,6 +45,7 @@ fclean: clean
 
 mclean:
 	@find . -name '._*' -type f -delete
+	@find . -name '.DS_Store' -type f -delete
 	@echo "Removed hidden ._ files."
 
 re: clean fclean libft all
