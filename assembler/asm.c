@@ -127,7 +127,7 @@ void	ft_asm(t_vars *v)
 void	create_s_vars(t_vars *v, int len)
 {
 	char	*temp;
-	
+
 	len = ft_strstr(v->c_arg, ".s") - v->c_arg;
 	v->cor_arg = (char*)ft_memalloc(sizeof(char) * (len + 5));
 	ft_strncpy(v->cor_arg, v->c_arg, len);
