@@ -57,11 +57,20 @@ void	init(t_vars *v)
 	v->ret = 0;
 	v->num_opts = 0;
 	v->num_args = 0;
-	v->test_path = NULL;
-	v->test_file = NULL;
+	v->c_path = NULL;
+	v->c_file = NULL;
+	v->c_arg = NULL;
+	v->cor_path = NULL;
+	v->cor_file = NULL;
+	v->cor_arg = NULL;
+	v->cor_fd = -1;
 	v->paths = NULL;
 	v->files = NULL;
 	v->args = NULL;
+	v->header.magic = COREWAR_EXEC_MAGIC;
+	ft_bzero(v->header.prog_name, PROG_NAME_LENGTH + 1);
+	v->header.prog_size = 0;
+	ft_bzero(v->header.comment, COMMENT_LENGTH + 1);
 	while (++i < MAX_OPTS + 2)
 		v->options[i] = '\0';
 }
@@ -95,9 +104,50 @@ void	ft_exit(t_vars *v, int argc)
 
 void	ft_asm(t_vars *v)
 {
+	v->ret = 1;
+	v->c_path = v->paths[v->i];
+	v->c_file = v->files[v->i];
+	v->c_arg = v->args[v->i];
+	create_s_vars(v, 0);
 	ft_putstr("Compiling ");
 	ft_putstr(v->args[v->i]);
 	ft_putstr(" at index ");
 	ft_putnbr(v->i);
 	ft_putendl(".");
+	lex_and_parse(v);
+	ft_strdel(&v->cor_arg);
+	ft_strdel(&v->cor_path);
+}
+
+/*
+**	Populates v->cor_arg, 'v->cor_path' & 'v->cor_file' with approapreate names
+**	and prints them out if 'v' was selected as an option.
+*/
+
+void	create_s_vars(t_vars *v, int len)
+{
+	char	*temp;
+	
+	len = ft_strstr(v->c_arg, ".s") - v->c_arg;
+	v->cor_arg = (char*)ft_memalloc(sizeof(char) * (len + 5));
+	ft_strncpy(v->cor_arg, v->c_arg, len);
+	ft_strcat(v->cor_arg, ".cor");
+	v->cor_file = v->cor_arg;
+	if (((temp = ft_strrchr(v->cor_arg, '/')) != NULL))
+	{
+		len = ft_strlen(v->cor_arg) - ft_strlen(temp + 1);
+		v->cor_path = ft_strsub(v->cor_arg, 0, len - 1);
+		v->cor_file = (v->cor_arg + len);
+	}
+	else
+		v->cor_path = ".";
+	if (ft_strchr(v->options, 'v'))
+	{
+		ft_putstr("\nProcessing Cor Variables:\nCor Arg: ");
+		ft_putendl(v->cor_arg);
+		ft_putstr("Cor Path: ");
+		ft_putendl(v->cor_path);
+		ft_putstr("Cor File: ");
+		ft_putendl(v->cor_file);
+	}
 }

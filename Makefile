@@ -13,11 +13,13 @@
 ASMNAME = asm
 ASMLOC = assembler/
 ASMFILES =	$(ASMLOC)asm.c\
-			$(ASMLOC)process_args.c
+			$(ASMLOC)process_args.c\
+			$(ASMLOC)lex_and_parse.c
 ASMHEADER = $(ASMLOC)asm.h
 ASMHLOC = $(ASMLOC)
 ASMOBJECTS =	asm.o\
-				process_args.o
+				process_args.o\
+				lex_and_parse.o
 ASMFLAGS = -Wall -Werror -Wextra -I$(ASMHLOC) -c -g -g3
 
 LIBFT = libft/libft.a

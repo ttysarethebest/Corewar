@@ -34,5 +34,5 @@ char	*ft_strstr(const char *haystack, const char *needle)
 		index = 0;
 		i++;
 	}
-	return (0);
+	return (NULL);
 }

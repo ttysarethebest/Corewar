@@ -50,13 +50,13 @@ void	add_arg(char *arg, t_vars *v)
 
 	if ((test = test_arg(v, arg, ft_strlen(arg))) == 0)
 	{
-		ft_arrinc(&(v->paths), v->test_path, v->num_args);
-		ft_arrinc(&(v->files), v->test_file, v->num_args);
+		ft_arrinc(&(v->paths), v->c_path, v->num_args);
+		ft_arrinc(&(v->files), v->c_file, v->num_args);
 		ft_arrinc(&(v->args), arg, v->num_args);
 		v->num_args++;
 	}
-	if (ft_strcmp(v->test_path, arg) != 0 && ft_strcmp(v->test_path, ".") != 0)
-		free(v->test_path);
+	if (ft_strcmp(v->c_path, arg) != 0 && ft_strcmp(v->c_path, ".") != 0)
+		free(v->c_path);
 	if (ft_strchr(v->options, 'v'))
 		print_verbose(v, arg, test);
 	if (test != 0)
@@ -76,7 +76,7 @@ void	add_arg(char *arg, t_vars *v)
 /*
 **	Takes in a string argument 'arg' and its len, check's the type of the
 **	argument, if it is ".s", it checks to see if the file exits using
-**	'test_file_dir()' and returns an int depending on the result.
+**	'c_file_dir()' and returns an int depending on the result.
 **
 **	Return Values:
 **	 0 : The argument is valid and exists
@@ -92,19 +92,18 @@ int		test_arg(t_vars *v, char *arg, int arg_len)
 	char	*temp;
 	int		path_len;
 
-	v->test_path = arg;
-	v->test_file = arg;
+	v->c_file = arg;
 	if (ft_strcmp(&arg[arg_len - 2], ".s") != 0)
 		return (-4);
 	if (((temp = ft_strrchr(arg, '/')) != NULL))
 	{
 		path_len = arg_len - ft_strlen(temp + 1);
-		v->test_path = ft_strsub(arg, 0, path_len - 1);
-		v->test_file = (arg + path_len);
+		v->c_path = ft_strsub(arg, 0, path_len - 1);
+		v->c_file = (arg + path_len);
 	}
 	else
-		v->test_path = ".";
-	d = opendir(v->test_path);
+		v->c_path = ".";
+	d = opendir(v->c_path);
 	if (d == NULL)
 		return (-3);
 	else
@@ -115,7 +114,7 @@ int		test_arg(t_vars *v, char *arg, int arg_len)
 }
 
 /*
-**	Searches for 'v->test_file' inside the dir 'v->test_path'. If found it
+**	Searches for 'v->c_file' inside the dir 'v->c_path'. If found it
 **	attempts to open the file and returns an int depening on the result.
 **
 **	Return Values:
@@ -132,12 +131,13 @@ int		test_file_dir(t_vars *v, char *arg)
 	int				flag;
 
 	flag = 0;
-	d = opendir(v->test_path);
+	d = opendir(v->c_path);
 	while ((dir = readdir(d)) != NULL)
 	{
-		if (ft_strcmp(dir->d_name, v->test_file) == 0)
+		if (ft_strcmp(dir->d_name, v->c_file) == 0)
 			flag = 1;
 	}
+	closedir(d);
 	if (flag == 1)
 	{
 		if (lstat(arg, &stats) != -1)
@@ -161,9 +161,9 @@ void	print_verbose(t_vars *v, char *path, int test)
 	ft_putstr("Test Arg Status: ");
 	ft_putnendl(test);
 	ft_putstr("Processed Path: ");
-	ft_putendl(v->test_path);
+	ft_putendl(v->c_path);
 	ft_putstr("Processed File: ");
-	ft_putendl(v->test_file);
+	ft_putendl(v->c_file);
 	ft_putendl("\nPost Processing\nArgs Array: ");
 	ft_arrprint(v->args);
 	ft_putstr("\n");
