@@ -42,6 +42,31 @@ typedef struct		s_vars
 	header_t		header;
 }					t_vars;
 
+typedef struct		s_line
+{
+	struct s_label	*label;
+	char			*pre_off;
+	int				opcode;
+	int				offset;
+	int				data;
+	int				byte;
+}					t_line;
+
+typedef struct		s_label
+{
+	struct s_label	*next;
+	struct s_label	*prev;
+	char			*name;
+	t_line			lines[];
+}					t_label;
+
+typedef struct		s_cmds
+{
+	t_label			*main;
+	t_label			*start;
+	t_label			*end;
+}					t_cmds;
+
 int					main(int argc, char **argv);
 void				init(t_vars *v);
 void				ft_exit(t_vars *v, int argc);
