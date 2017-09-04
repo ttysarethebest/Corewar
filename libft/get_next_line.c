@@ -106,7 +106,7 @@ void	rdr(const int fd, t_line *li, char **temp)
 int		get_next_line(const int fd, char **line)
 {
 	static char	*temp = "";
-	t_line		li;
+	t_li		li;
 
 	li.red = BUFF_SIZE;
 	li.found = NULL;

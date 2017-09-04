@@ -28,14 +28,14 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
-typedef struct	s_line
+typedef struct	s_li
 {
 	char	*found;
 	int		red;
 	int		i;
 	int		cnt;
 	int		ret;
-}				t_line;
+}				t_li;
 
 void				ft_arrdec(char ***a, int index, int len);
 void				ft_arrdel(char **arr);

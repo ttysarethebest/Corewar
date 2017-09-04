@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   asm.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmaske <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tmaske <tmaske@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/24 15:32:06 by tmaske            #+#    #+#             */
-/*   Updated: 2017/08/24 15:32:08 by tmaske           ###   ########.fr       */
+/*   Updated: 2017/09/04 10:59:10 by tmaske           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int		main(int argc, char **argv)
 
 	i = 0;
 	init(&v);
+	v->i = -1;
 	while (++i < argc)
 	{
 		if (argv[i][0] == '-')
@@ -50,9 +51,6 @@ int		main(int argc, char **argv)
 
 void	init(t_vars *v)
 {
-	int i;
-
-	i = -1;
 	v->i = -1;
 	v->ret = 0;
 	v->num_opts = 0;
@@ -71,8 +69,13 @@ void	init(t_vars *v)
 	ft_bzero(v->header.prog_name, PROG_NAME_LENGTH + 1);
 	v->header.prog_size = 0;
 	ft_bzero(v->header.comment, COMMENT_LENGTH + 1);
-	while (++i < MAX_OPTS + 2)
+	while (++v->i < MAX_OPTS + 2)
 		v->options[i] = '\0';
+	v->cmds->main = NULL;
+	v->cmds->start = NULL;
+	v->cmds->end = NULL;
+	v->cmds->c_lbl = NULL;
+	v->cmds->c_ln = NULL;
 }
 
 /*
@@ -99,7 +102,7 @@ void	ft_exit(t_vars *v, int argc)
 }
 
 /*
-**	Poops in your moms face.
+**	Sets the current path, current file and current arg in 'v'. 
 */
 
 void	ft_asm(t_vars *v)
@@ -108,7 +111,7 @@ void	ft_asm(t_vars *v)
 	v->c_path = v->paths[v->i];
 	v->c_file = v->files[v->i];
 	v->c_arg = v->args[v->i];
-	create_s_vars(v, 0);
+	create_cor_vars(v, 0);
 	ft_putstr("Compiling ");
 	ft_putstr(v->args[v->i]);
 	ft_putstr(" at index ");
@@ -124,7 +127,7 @@ void	ft_asm(t_vars *v)
 **	and prints them out if 'v' was selected as an option.
 */
 
-void	create_s_vars(t_vars *v, int len)
+void	create_cor_vars(t_vars *v, int len)
 {
 	char	*temp;
 

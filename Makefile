@@ -10,19 +10,19 @@
 #                                                                              #
 # **************************************************************************** #
 
+HLOC = includes
+LIBFT = libft/libft.a
+
 ASMNAME = asm
 ASMLOC = assembler/
-ASMFILES =	$(ASMLOC)asm.c\
+ASMFILES =	$(HLOC)op.c\
+			$(ASMLOC)asm.c\
 			$(ASMLOC)process_args.c\
 			$(ASMLOC)lex_and_parse.c
-ASMHEADER = $(ASMLOC)asm.h
-ASMHLOC = $(ASMLOC)
 ASMOBJECTS =	asm.o\
 				process_args.o\
 				lex_and_parse.o
-ASMFLAGS = -Wall -Werror -Wextra -I$(ASMHLOC) -c -g -g3
-
-LIBFT = libft/libft.a
+ASMFLAGS = -Wall -Werror -Wextra -I$(HLOC) -c -g -g3
 
 $(ASMNAME): fclean
 	@gcc $(ASMFLAGS) $(ASMFILES)

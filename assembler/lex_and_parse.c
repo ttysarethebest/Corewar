@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lex_and_parse.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmaske <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tmaske <tmaske@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/26 15:33:38 by tmaske            #+#    #+#             */
-/*   Updated: 2017/08/26 15:33:39 by tmaske           ###   ########.fr       */
+/*   Updated: 2017/09/04 11:04:53 by tmaske           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	lex_and_parse(t_vars *v)
 {
 	char	blank[8];
 
-	populate_header(v, 0);
+	initial_read(v, 0);
 	init_cor_file(v, blank);
 }
 
@@ -42,7 +42,7 @@ void	lex_and_parse(t_vars *v)
 **	.s file and writes that number to 'v->header->prog_size'.
 */
 
-void	populate_header(t_vars *v, int fd)
+void	initial_read(t_vars *v, int fd)
 {
 	char	*line;
 	char	*start;
@@ -63,10 +63,22 @@ void	populate_header(t_vars *v, int fd)
 			else if (ft_strstr(line, ".comment"))
 				ft_strncpy(v->header.comment, start, end - start);
 		}
+		parse_line(v, line);
 		ft_strdel(&line);
 		v->header.prog_size++;
 	}
 	close(fd);
+}
+
+/*
+**	
+*/
+
+void	parse_line(t_vars *v, char *line)
+{
+	if (v->header.prog_size > 2)
+	{
+	}
 }
 
 /*
